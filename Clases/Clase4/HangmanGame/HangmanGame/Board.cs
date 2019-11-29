@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace HangmanGame {
     class Board {
         private string board;
-        private string printableBoard;
-        private bool victory;
+        private bool victory=false;
 
         public void setBoard (string board) {
             this.board = board;
@@ -18,16 +17,6 @@ namespace HangmanGame {
             return board;
         }
 
-        public void setPrintableBoard (string printableBoard)
-        {
-            this.printableBoard = printableBoard;
-        }
-
-        public string getPrintableBoard ()
-        {
-            return printableBoard;
-        }
-
         public void setVictory (bool victory) {
             this.victory = victory;
         }
@@ -35,6 +24,17 @@ namespace HangmanGame {
         public bool isVictory ()
         {
             return victory;
+        }
+
+
+        static string printBoard () {
+            StringBuilder printableBoard = new StringBuilder("");
+            for (int i = 0; i < board.Length; i++) {
+                printableBoard.Append (board.ToCharArray ()[i]);
+                printableBoard.Append (" ");
+            }
+            Console.WriteLine(printableBoard.ToString());
+            Console.WriteLine("Ingrese una letra: ");
         }
     }
 }
