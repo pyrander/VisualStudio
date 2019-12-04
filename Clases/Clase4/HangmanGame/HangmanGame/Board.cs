@@ -9,11 +9,15 @@ namespace HangmanGame {
         private string board="";
         private bool victory=false;
 
+        public Board (string secretword) {
+            initBoard (secretword.Length, '_');
+        }
+
         public string GetBoard () {
             return board;
         }
 
-        public bool isVictory ()
+        public bool IsVictory ()
         {
             return victory;
         }
@@ -68,7 +72,7 @@ namespace HangmanGame {
         }
 
         public void Close () {
-            Console.WriteLine ("Presione Enter para Cerrar");
+            Draw ("Presione Enter para Cerrar");
             Console.ReadLine ();
         }
 

@@ -9,31 +9,25 @@ namespace HangmanGame {
 
     class Program {
 
-        static GameManager game = new GameManager();
+        static GameManager game = new GameManager("ZAPATO");
 
         static void Main (string[] args)
         {
-            game.SetSecretWord ("ZAPATO");
-            game.SetBoard (new Board ());
-            while (game.GetHP()>0) {
+            while (game.IsPlaying()) {
                 game.GetBoard().Clear ();
                 game.GameStep ();
-                if (game.GetBoard ().isVictory ()) {
-                    break;
-                }
             }
            
-            if (game.GetBoard ().isVictory ()) {
+            if (game.GetBoard ().IsVictory ()) {
                 game.GetBoard ().Clear ();
-               game.GameStep ();
-                Console.WriteLine ("VICTORY!!");
+                game.GameStep ();
+                game.GetBoard ().Draw ("VICTORY!!");
             } else {
                 game.GetBoard ().Clear ();
                 game.GetBoard ().print ();
-                int letras = game.GetBoard ().Faltantes ();
-                Console.WriteLine ("Te faltaron: " + letras + " letras");
-                Console.WriteLine ("Intentos restantes: " + game.GetHP ());
-                Console.WriteLine ("GAME OVER :(");
+                game.GetBoard ().Draw ("Te faltaron: " + game.GetBoard ().Faltantes () + " letras");
+                game.GetBoard ().Draw (game.GetPlayer().Life());
+                game.GetBoard ().Draw ("GAME OVER :(");
             }
 
             game.GetBoard ().Close();

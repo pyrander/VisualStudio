@@ -7,26 +7,29 @@ using System.Threading.Tasks;
 namespace HangmanGame {
     class GameManager {
         string secretword = "";
-        int hp = 3;
         Board gameBoard;
+        Player player;
+        bool playing;
 
-        public void SetSecretWord (string secretword) {
+        public GameManager (string secretword) {
             this.secretword = secretword;
+            this.gameBoard = new Board (secretword);
+            this.player = new Player ();
+            this.playing = true;
         }
 
-        public void SetBoard (Board gameBoard) {
-            gameBoard.initBoard (secretword.Length, '_');
-            this.gameBoard = gameBoard;
+        public bool IsPlaying () {
+            return playing;
+        }
+
+        public Player GetPlayer ()
+        {
+            return player;
         }
 
         public Board GetBoard () {
             return gameBoard;
         }
-
-        public int GetHP () {
-            return hp;
-        }
-
 
         public bool IsScore (Board gameBoard, string letter)
         {
@@ -41,9 +44,14 @@ namespace HangmanGame {
             StringBuilder sb = new StringBuilder (gameBoard.GetBoard ());
             if (IsScore (gameBoard, letter)) {
                 gameBoard.Fill (letter, word);
+                Console.Beep ();
                 return gameBoard;
             } else {
-                hp--;
+                Console.Beep (10000, 500);
+                player.LoseLife () ;
+                if (!player.IsAlive()) {
+                    playing = false;
+                }
                 return gameBoard;
             }
         }
@@ -60,10 +68,12 @@ namespace HangmanGame {
         public void GameStep ()
         {
             gameBoard.print ();
-            Console.WriteLine ("Ingrese una Letra");
-            Console.WriteLine ("Intentos restantes: " + hp);
-            if (!gameBoard.isVictory ()) {
+            gameBoard.Draw ("Ingrese una Letra");
+            gameBoard.Draw (player.Life());
+            if (!gameBoard.IsVictory ()) {
                 gameBoard = ProcessInput ();
+            } else {
+                playing = false;
             }
         }
 
