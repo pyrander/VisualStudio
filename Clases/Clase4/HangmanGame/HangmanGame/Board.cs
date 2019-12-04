@@ -6,19 +6,11 @@ using System.Threading.Tasks;
 
 namespace HangmanGame {
     class Board {
-        private string board;
+        private string board="";
         private bool victory=false;
 
-        public void setBoard (string board) {
-            this.board = board;
-        }
-
-        public string getBoard (){
+        public string GetBoard () {
             return board;
-        }
-
-        public void setVictory (bool victory) {
-            this.victory = victory;
         }
 
         public bool isVictory ()
@@ -26,15 +18,59 @@ namespace HangmanGame {
             return victory;
         }
 
+        public void initBoard (int length, char fillChar)
+        {
+            for (int i = 0; i < length; i++) {
+                this.board = string.Concat (board, fillChar);
+            }
+        }
 
-        static string printBoard () {
-            StringBuilder printableBoard = new StringBuilder("");
+        public void print ()
+        {
+            StringBuilder printableBoard = new StringBuilder ("");
             for (int i = 0; i < board.Length; i++) {
                 printableBoard.Append (board.ToCharArray ()[i]);
                 printableBoard.Append (" ");
             }
-            Console.WriteLine(printableBoard.ToString());
-            Console.WriteLine("Ingrese una letra: ");
+            Draw(printableBoard.ToString ());
         }
+
+        public void Fill (string letter, string word)
+        {
+            StringBuilder newBoard = new StringBuilder (board);
+            for (int i = 0; i < word.Length; i++) {
+                if (letter[0] == word[i]) {
+                    newBoard[i] = word[i];
+                }
+            }
+            board = newBoard.ToString ();
+            if (board == word) {
+                victory = true;
+            }
+        }
+
+        public int Faltantes () {
+            int faltantes = 0;
+            for (int i = 0; i < board.Length; i++) {
+                if ('_' == board[i]) {
+                    faltantes++;
+                }
+            }
+            return faltantes;
+        }
+
+        public void Clear () {
+            Console.Clear ();
+        }
+
+        public void Draw (string line) {
+            Console.WriteLine (line);
+        }
+
+        public void Close () {
+            Console.WriteLine ("Presione Enter para Cerrar");
+            Console.ReadLine ();
+        }
+
     }
 }

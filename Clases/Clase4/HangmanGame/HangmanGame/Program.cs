@@ -9,66 +9,34 @@ namespace HangmanGame {
 
     class Program {
 
-        static int hp = 3;
-        static string secretword = "ZAPATO";
+        static GameManager game = new GameManager();
 
         static void Main (string[] args)
         {
-            Board gameBoard = new Board ();
-            string board = "";
-            for (int i = 0; i < secretword.Length; i++) {
-                board = string.Concat (board, "_");
-            }
-            gameBoard.setBoard (board);
-            while (hp>0) {
-                if (gameBoard.isVictory ()) {
+            game.SetSecretWord ("ZAPATO");
+            game.SetBoard (new Board ());
+            while (game.GetHP()>0) {
+                game.GetBoard().Clear ();
+                game.GameStep ();
+                if (game.GetBoard ().isVictory ()) {
                     break;
-                }else{
-                    gameBoard = gameStep (gameBoard);
                 }
             }
-            if (gameBoard.isVictory ()) {
+           
+            if (game.GetBoard ().isVictory ()) {
+                game.GetBoard ().Clear ();
+               game.GameStep ();
                 Console.WriteLine ("VICTORY!!");
             } else {
+                game.GetBoard ().Clear ();
+                game.GetBoard ().print ();
+                int letras = game.GetBoard ().Faltantes ();
+                Console.WriteLine ("Te faltaron: " + letras + " letras");
+                Console.WriteLine ("Intentos restantes: " + game.GetHP ());
                 Console.WriteLine ("GAME OVER :(");
             }
-            
 
-            Console.ReadLine ();
-        }
-
-        static Board gameStep (Board gameBoard) {
-            gameBoard.printBoard();
-            string letter = Console.ReadLine ();
-            letter = letter.ToUpper ();
-            bool score = secretword.Contains (letter);
-            gameBoard = updateBoard (gameBoard, letter,secretword);
-            return gameBoard;
-        }
-
-        static Board updateBoard (Board gameBoard, string letter, string word) {
-            StringBuilder sb = new StringBuilder (gameBoard.getBoard ());
-            if (isScore (gameBoard, letter)) {
-                for (int i = 0; i < word.Length; i++) {
-                    sb[i] = Char.Parse (letter);
-                    gameBoard.setBoard (sb.ToString ());
-                    if (gameBoard.getBoard().Equals(word)) {
-                        gameBoard.setVictory (true);
-                        return gameBoard;
-                    }
-                }
-                return gameBoard;
-            } else {
-                hp--;
-                Console.WriteLine ("Incorrecto, intentos restantes: " + hp);
-                return gameBoard;
-            }  
-        }
-
-        static bool isScore (Board gameBoard, string letter) {
-            bool hasLetter = secretword.Contains (letter);
-            bool notPlayed = !gameBoard.getBoard().Contains (letter);
-            return (hasLetter && notPlayed);  
+            game.GetBoard ().Close();
         }
 
     }
