@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VisualStudio
+namespace Proyecto
 {
     class Program
     {
