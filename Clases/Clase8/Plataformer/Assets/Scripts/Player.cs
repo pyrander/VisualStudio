@@ -24,12 +24,11 @@ public class Player : MonoBehaviour
     {
 
        float h = Input.GetAxisRaw("Horizontal") * Time.deltaTime;
-       
        animator.SetBool("walk",(h != 0));
-        if (h<0) {
-            spriteRenderer.flipX = true;
-        }else if (h > 0) {
-            spriteRenderer.flipX = false;
+       animator.SetBool ("jump", !grounded);
+       animator.SetFloat ("vertical", Mathf.Sign(rbody2D.velocity.y));
+        if (h!=0) {
+            spriteRenderer.flipX = (h < 0);
         }
 
         transform.Translate (Vector3.right * h * speed);
