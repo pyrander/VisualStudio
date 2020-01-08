@@ -6,15 +6,25 @@ public class Player : MonoBehaviour
 {
     static public Player instance;
 
+
     [SerializeField]
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rbody2D;
     private Vector3 initialPos;
+    private bool onGround = false;
 
     public int jumpForce = 5;
     public float speed = 1f;
     public Animator animator;
-    public bool grounded { get { return RoundAbsoluteToZero(rbody2D.velocity.y)==0; } }
+    public bool grounded { get { return RoundAbsoluteToZero(rbody2D.velocity.y)==0 || onGround; } }
+
+
+    static public Vector3 setPosition {
+        set {
+            instance.transform.position = value;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start ()
@@ -55,6 +65,18 @@ public class Player : MonoBehaviour
     {
         if (col.gameObject.tag == "Death") {
             transform.position = initialPos;
+        }
+
+        if (col.gameObject.tag == "Floor") {
+            onGround = true;
+        }
+
+    }
+
+    private void OnCollisionExit2D (Collision2D col)
+    {
+        if (col.gameObject.tag == "Floor") {
+            onGround = false;
         }
     }
 
