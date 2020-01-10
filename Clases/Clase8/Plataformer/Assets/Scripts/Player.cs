@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
     static public Player instance;
 
 
@@ -13,24 +12,51 @@ public class Player : MonoBehaviour
     private Vector3 initialPos;
     private bool onGround = false;
 
+    [SerializeField]
+    private HealthBarController healthBarController;
+    public float maxLife = 50;
+    public float _currentLife;
+
     public int jumpForce = 5;
     public float speed = 1f;
     public Animator animator;
-    public bool grounded { get { return RoundAbsoluteToZero(rbody2D.velocity.y)==0 || onGround; } }
+    public bool grounded { get { return RoundAbsoluteToZero (rbody2D.velocity.y) == 0 || onGround; } }
+    public float CurrentLife {
+        set {
+            _currentLife = Mathf.Clamp (value, 0, maxLife);
+        }
+        get {
+            return _currentLife;
+        }
+    }
 
 
-    static public Vector3 setPosition {
+    public static Vector3 setPosition {
         set {
             instance.transform.position = value;
         }
     }
 
+    public static HealthBarController  HealthBar{
+        set {
+            instance.healthBarController = value;
+        }
+
+        get {
+            return instance.healthBarController;
+        }
+    }
+
+    private void Awake ()
+    {
+        instance = this;
+        DontDestroyOnLoad (gameObject);
+    }
 
     // Start is called before the first frame update
     void Start ()
     {
         initialPos = transform.position;
-        instance = this;
         DontDestroyOnLoad (gameObject);
         spriteRenderer = GetComponent<SpriteRenderer> ();
         rbody2D = GetComponent<Rigidbody2D> ();
@@ -53,6 +79,17 @@ public class Player : MonoBehaviour
         if (grounded && Input.GetKeyDown (KeyCode.Space)) {
             rbody2D.AddForce (Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
+
+
+        if (Input.GetKeyDown (KeyCode.O)) {
+            TakeDamage(1f);
+        }
+
+        if (Input.GetKeyDown (KeyCode.P)) {
+            GainHealth(1f);
+        }
+
+        HealthBar.CurrentLife = CurrentLife;
     }
 
     void FixedUpdate () {
@@ -87,4 +124,13 @@ public class Player : MonoBehaviour
         }
         return decimalValue;
     }
+
+    void TakeDamage (float damage) {
+        CurrentLife -= damage;
+    }
+
+    void GainHealth (float heal) {
+        CurrentLife += heal;
+    }
+
 }
