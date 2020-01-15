@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
 
     [SerializeField]
     private HealthBarController healthBarController;
+    private HealthBarPointController healthBarPointController;
     public float maxLife = 50;
     public float _currentLife;
 
@@ -44,6 +45,16 @@ public class Player : MonoBehaviour {
 
         get {
             return instance.healthBarController;
+        }
+    }
+
+    public static HealthBarPointController HealthBarPoint {
+        set {
+            instance.healthBarPointController = value;
+        }
+
+        get {
+            return instance.healthBarPointController;
         }
     }
 
@@ -89,7 +100,6 @@ public class Player : MonoBehaviour {
             GainHealth(1f);
         }
 
-        HealthBar.CurrentLife = CurrentLife;
     }
 
     void FixedUpdate () {
@@ -127,10 +137,14 @@ public class Player : MonoBehaviour {
 
     void TakeDamage (float damage) {
         CurrentLife -= damage;
+        HealthBar.CurrentLife = CurrentLife;
+        
     }
 
     void GainHealth (float heal) {
         CurrentLife += heal;
+        HealthBar.CurrentLife = CurrentLife;
+        HealthBarPoint.CurrentLife = CurrentLife;
     }
 
 }
