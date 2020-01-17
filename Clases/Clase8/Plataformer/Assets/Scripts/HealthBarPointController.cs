@@ -12,7 +12,7 @@ public class HealthBarPointController : MonoBehaviour {
     public float _currentLife;
     public float CurrentLife {
         set {
-            isDamage = _currentLife > value;
+            isDamage = Mathf.Clamp (_currentLife, 0, maxLife) > value;
             _currentLife = Mathf.Clamp (value, 0, maxLife);
             BarUpdate ();
             

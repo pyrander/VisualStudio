@@ -452,6 +452,7 @@ MonoBehaviour:
   _currentLife: 0
   jumpForce: 9
   speed: 2
+  Bullet: {fileID: 7132199420092945632, guid: e0551f1c151c7af4e8e31e2721ce842f, type: 3}
   animator: {fileID: 598621693}
 --- !u!1 &653874286
 GameObject:
@@ -3521,6 +3522,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBarPoint
       objectReference: {fileID: 0}
+    - target: {fileID: 7940778184030910793, guid: d4d6b7561c3a69346b52372553a10219,
+        type: 3}
+      propertyPath: barPoint
+      value: 
+      objectReference: {fileID: 4640244866628919915, guid: cf1610471f0f9f24b9c6a5a46db4573e,
+        type: 3}
+    - target: {fileID: 7940778184030910793, guid: d4d6b7561c3a69346b52372553a10219,
+        type: 3}
+      propertyPath: bar
+      value: 
+      objectReference: {fileID: 421573415311147283}
     - target: {fileID: 7940778184030910797, guid: d4d6b7561c3a69346b52372553a10219,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3626,22 +3638,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.50000006
       objectReference: {fileID: 0}
-    - target: {fileID: 7940778184030910793, guid: d4d6b7561c3a69346b52372553a10219,
-        type: 3}
-      propertyPath: barPoint
-      value: 
-      objectReference: {fileID: 4640244866628919915, guid: cf1610471f0f9f24b9c6a5a46db4573e,
-        type: 3}
-    - target: {fileID: 7940778184030910793, guid: d4d6b7561c3a69346b52372553a10219,
-        type: 3}
-      propertyPath: bar
-      value: 
-      objectReference: {fileID: 421573415311147283}
-    - target: {fileID: 7940778183682464962, guid: d4d6b7561c3a69346b52372553a10219,
-        type: 3}
-      propertyPath: m_Name
-      value: fondo
-      objectReference: {fileID: 0}
     - target: {fileID: 7940778183682464963, guid: d4d6b7561c3a69346b52372553a10219,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -3656,6 +3652,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.09999253
+      objectReference: {fileID: 0}
+    - target: {fileID: 7940778183682464962, guid: d4d6b7561c3a69346b52372553a10219,
+        type: 3}
+      propertyPath: m_Name
+      value: fondo
       objectReference: {fileID: 0}
     - target: {fileID: 7073623839226375555, guid: d4d6b7561c3a69346b52372553a10219,
         type: 3}

@@ -15,11 +15,20 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private HealthBarController healthBarController;
     private HealthBarPointController healthBarPointController;
+
+    [Header ("Attack")]
     public float maxLife = 50;
+    [Range(0f,50f)]
     public float _currentLife;
 
     public int jumpForce = 5;
     public float speed = 1f;
+
+    [Header ("Attack")]
+    [Tooltip ("bullet Prefab")]
+    public BulletRock Bullet;
+
+
     public Animator animator;
     public bool grounded { get { return RoundAbsoluteToZero (rbody2D.velocity.y) == 0 || onGround; } }
     public float CurrentLife {
@@ -100,6 +109,14 @@ public class Player : MonoBehaviour {
             GainHealth(1f);
         }
 
+        if (Input.GetKeyDown (KeyCode.F)) {
+            Attack (spriteRenderer.flipX);
+        }
+
+        if (Input.GetKeyDown (KeyCode.G)) {
+            FastAttack (spriteRenderer.flipX);
+        }
+
     }
 
     void FixedUpdate () {
@@ -145,6 +162,18 @@ public class Player : MonoBehaviour {
         CurrentLife += heal;
         HealthBar.CurrentLife = CurrentLife;
         HealthBarPoint.CurrentLife = CurrentLife;
+    }
+
+    void Attack (bool left)
+    {
+        BulletRock clonado = Instantiate<BulletRock> (Bullet, transform.position, Quaternion.identity);
+        clonado.Init (1f, left?Direction.left:Direction.right);
+    }
+
+    void FastAttack (bool left)
+    {
+        BulletRock clonado = Instantiate<BulletRock> (Bullet, transform.position, Quaternion.identity);
+        clonado.Init (10f, left ? Direction.left : Direction.right);
     }
 
 }
