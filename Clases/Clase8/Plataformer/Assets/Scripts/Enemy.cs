@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
     }
 
     void onDeath () {
+        SpawnController.Create ();
         Destroy (gameObject);
     }
 }
