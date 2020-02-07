@@ -1,67 +1,55 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Topdown.AI;
 
 namespace Topdown
 {
     public class Patrol : MonoBehaviour
     {
+        int currentIndex;
         float t = 0f;
-        Vector3 origin;
         Vector3 startPos;
         Vector3 endPos;
-        Vector3 point;
-        int currentIndex;
-        public Vector2[] points;
+        List<Vector3> points;
+
         public float speed = 1f;
+
         public ActionArea player;
 
+        public Path path;
 
         // Start is called before the first frame update
         void Start()
         {
             currentIndex = 0;
-            point = points[currentIndex];
-            origin = transform.position;
-            startPos = origin;
-            endPos = origin + point;
+            points = path.points;
+
+            startPos = points[0];
+            endPos = points[1];
+
+            if (path.type == PathType.pingpong && path.isClose)
+                points.Add(points[0]);
         }
 
         // Update is called once per frame
         void Update()
         {
-
             transform.position = Vector3.Lerp(startPos, endPos, t);
 
             t += Time.deltaTime * speed;
 
-            if (Vector3.Distance(transform.position, player.transform.position) <= player.radius)
-            {
-                speed *= 2f;
-            }
-            else
-            {
-                float distance = Vector3.Distance(startPos, endPos);
-                speed = 2f / distance;
-            }
-
 
             if (t >= 1f)
             {
-                startPos = endPos;
                 currentIndex++;
 
-                if (currentIndex >= points.Length)
-                {
-                    currentIndex = -1;
-                    point = Vector3.zero;
-                }
-                else
-                {
-                    point = points[currentIndex];
-                }
+                if (currentIndex >= points.Count)
+                    OnFinishPath();
 
-                endPos = origin + point;
+
+                startPos = endPos;
+                endPos = points[currentIndex];
 
                 float distance = Vector3.Distance(startPos, endPos);
                 speed = 2f / distance;
@@ -69,41 +57,29 @@ namespace Topdown
                 t = 0;
             }
 
-
         }
 
-        private void OnDrawGizmos()
+        private void OnFinishPath()
         {
-            if (!Application.isPlaying && origin != transform.position)
+            switch (path.type)
             {
-                origin = transform.position;
+                case PathType.loop:
+                    currentIndex = 0;
+
+                    if (!path.isClose)
+                    {
+                        endPos = points[currentIndex];
+                        transform.position = endPos;
+                    }
+                    break;
+
+                case PathType.pingpong:
+
+                    points.Reverse();
+                    currentIndex = 0;
+
+                    break;
             }
-                
-            Vector3 point = points[0];
-            Debug.DrawLine(
-                origin,
-                origin + point,
-                Color.cyan);
-
-            for (int i = 1; i < points.Length; i++)
-            {
-                point = points[i - 1];
-                Vector3 start = origin + point;
-
-                point = points[i];
-                Vector3 end = origin + point;
-                Debug.DrawLine(
-                    start,
-                    end,
-                    Color.cyan);
-            }
-
-            point = points[points.Length - 1];
-            Debug.DrawLine(
-                origin + point,
-                origin,
-                Color.cyan);
         }
-
     }
 }
